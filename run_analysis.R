@@ -1,91 +1,95 @@
-<<<<<<< HEAD
+
 ###############
-# Instructions:
+## You should create one R script called run_analysis.R that does the following. 
 
-# 1. Combine all the data
-# 2. Reduce the columns to those involving mean and sd
-# 3. Turn the activity numbers into words
-# 4. Fix the variable names 
-# 5. Create and save a version with an average of each variable for each activity and each subject. 
+## 1) Merges the training and the test sets to create one data set.
 
-###############################################
-# 1. Read and merge both train and test dataset
-###############################################
+## 2) Extracts only the measurements on the mean and standard deviation for each measurement. 
+
+## 3)Uses descriptive activity names to name the activities in the data set
+
+## 4)Appropriately labels the data set with descriptive variable names. 
+
+#3 5)From the data set in step 4, creates a second, independent tidy data set with the average 
+##    of each variable for each activity and each subject.
+
+##################################################################
+# 1. Merges the training and the test sets to create one data set.
+##################################################################
 
 
 ## read the TEST data 
-df.test <- read.csv("UCI HAR Dataset/test/X_test.txt", sep="", header=F)
+X.test <- read.table("UCI HAR Dataset/test/X_test.txt", sep="", header=F)
+Y.test <- read.table("UCI HAR Dataset/test/y_test.txt", header=F)
 
-# read related activities and subject file(s)
-test.activity <- read.table("UCI HAR Dataset/test/y_test.txt", header=F)
-test.subject <- read.table("UCI HAR Dataset/test/subject_test.txt", header=F)
+## read subject file
+subject.test <- read.table("UCI HAR Dataset/test/subject_test.txt", header=F)
 
-# combine activity and subject to the df.test
-df.test <- cbind(test.activity, df.test)
-df.test <- cbind(test.subject, df.test)
+# combine activity and subject to the X.test
+X.test <- cbind(Y.test, X.test)
+X.test <- cbind(subject.test, X.test)
 
 
 ## read the TRAIN data 
-df.train <- read.csv("UCI HAR Dataset/train/X_train.txt", sep="", header=F)
+X.train <- read.table("UCI HAR Dataset/train/X_train.txt", sep="", header=F)
+Y.train <- read.table("UCI HAR Dataset/train/y_train.txt", header=F)
 
-# read activities and subject file
-train.activity <- read.table("UCI HAR Dataset/train/y_train.txt", header=F)
-train.subject <- read.table("UCI HAR Dataset/train/subject_train.txt", header=F)
+# read subject file
+subject.train <- read.table("UCI HAR Dataset/train/subject_train.txt", header=F)
 
-# add activity and subject to the df.train
-df.train <- cbind(train.activity, df.train)
-df.train <- cbind(train.subject, df.train)
-
-
-## put TRAIN and TEST into one dataframe
-df <- rbind(df.test, df.train)
-
-# removing tmp objects to free up memory
-rm(df.train, df.test, train.activity, train.subject, test.subject, test.activity)
+# add activity and subject to X.train
+X.train <- cbind(Y.train, X.train)
+X.train <- cbind(subject.train, X.train)
 
 
+## merge TRAIN and TEST into one dataframe
+mergedset <- rbind(X.test, X.train)
 
-#########################################################################
-# 2. Extract only the measurements on the mean and standard deviation for 
+# remove tmp objects to free up memory
+rm(X.train, X.test, Y.train, Y.test, subject.test, subject.train)
+
+
+###########################################################################
+# 2. Extracts only the measurements on the mean and standard deviation for  
 #    each measurement.  
-#########################################################################
+###########################################################################
 
 #read the list of 561 variables 
 features <- read.table("UCI HAR Dataset/features.txt", header=F)
 
 #name the variables in the dataframe includind the first two columns; 
 #later we make the names more descriptive. 
-names(df)[1] <- c("subject")
-names(df)[2] <- c("activity")
-names(df)[3:563] <- as.character(features$V2) 
+names(mergedset)[1] <- c("subject")
+names(mergedset)[2] <- c("activity")
+names(mergedset)[3:563] <- as.character(features$V2) 
 
 #extract all variables that measure either "mean" or "std"
-ss <- grep("mean|std", names(df))
+ss <- grep("mean|std", names(mergedset))
 
-#subset df to those columns which contain mean or standard deviation measurements
-#preserve activity and subject columns as well
-df <- df[, c(1,2,ss)]
+## subset frame to those columns which contain mean or standard deviation measurements
+##  preserve activity and subject columns as well
+mergedsetsub <- mergedset[, c(1,2,ss)]
 
-#take out the FFT variables since these contain the same information as the original 
-#variables just in FFT form. Keep "t*" variables:
-st <- grep("^[t]", names(df))
-df <- df[, c(1,2,st)]
+## take out the FFT variables since these contain the same information as the original 
+##   variables just in FFT form. Keep "t*" variables:
+st <- grep("^[t]", names(mergedsetsub))
+mergedsetsub <- mergedsetsub[, c(1,2,st)]
 
-#cleaning up
+#clean up
 rm(ss, st)
 
 
-########################################################################
-# 3. use descriptive activity names to name the activites in the dataset
-########################################################################
+###########################################################################
+# 3. Uses descriptive activity names to name the activities in the data set
+###########################################################################
 
 # read the levels and lables of the activities
 l.activities <- read.table("UCI HAR Dataset/activity_labels.txt", header=F)
 
 #convert "activity" into descriptive factor. 
-df$activity <- factor(df$activity, levels=l.activities$V1, labels=l.activities$V2)
+mergedsetsub$activity <- factor(mergedsetsub$activity, levels=l.activities$V1, labels=l.activities$V2)
 
-#cleaning up
+#clean up
 rm(l.activities)
 
 
@@ -93,11 +97,10 @@ rm(l.activities)
 # 4. Fix the variable names
 ###########################
 
-#remove parenthesis "()" and "-" from the names since these will be interpreted
-#as mathematical signs when using the variable names in functions. 
+#remove parenthesis "()" and "-" from the names.
 
-names(df) <- gsub("[()]", "", names(df))
-names(df) <- gsub("[-]", "_", names(df))
+names(mergedsetsub) <- gsub("[()]", "", names(mergedsetsub))
+names(mergedsetsub) <- gsub("[-]", "_", names(mergedsetsub))
 
 
 
@@ -106,142 +109,13 @@ names(df) <- gsub("[-]", "_", names(df))
 #    variable  for each activity and each subject. 
 ##########################################################################
 
-#let's look at the number of cases for each group of subject-activity.
-table(df$subject, df$activity)
-
-#There are 30 subjects performing 6 activities; need to calculate the average for each 
-#variable for each of those 180 groupings. The resulting df will have 180 * 79 = 14220 cells. 
-
-
 #calculate the mean of each variable, grouped by subject and activity. 
-df.tidy <- aggregate(df[,3:ncol(df)], by=list(df$activity, df$subject), FUN=mean)
+tidy.frame <- aggregate(mergedsetsub[,3:ncol(mergedsetsub)], by=list(mergedsetsub$activity, mergedsetsub$subject), FUN=mean)
 
 #rename grouping variables
-names(df.tidy)[1] <- c("activity")
-names(df.tidy)[2] <- c("subject")
+names(tidy.frame)[1] <- c("activity")
+names(tidy.frame)[2] <- c("subject")
 
 #save tidy data set to file. 
-write.csv(df.tidy, file="dftidy.csv")
-=======
-###############
-# Instructions:
+write.table(tidy.frame, file="tidyset.txt", row.name=FALSE)
 
-# 1. Combine all the data
-# 2. Reduce the columns to those involving mean and sd
-# 3. Turn the activity numbers into words
-# 4. Fix the variable names 
-# 5. Create and save a version with an average of each variable for each activity and each subject. 
-
-###############################################
-# 1. Read and merge both train and test dataset
-###############################################
-
-
-## read the TEST data 
-df.test <- read.csv("UCI HAR Dataset/test/X_test.txt", sep="", header=F)
-
-# read related activities and subject file(s)
-test.activity <- read.table("UCI HAR Dataset/test/y_test.txt", header=F)
-test.subject <- read.table("UCI HAR Dataset/test/subject_test.txt", header=F)
-
-# combine activity and subject to the df.test
-df.test <- cbind(test.activity, df.test)
-df.test <- cbind(test.subject, df.test)
-
-
-## read the TRAIN data 
-df.train <- read.csv("UCI HAR Dataset/train/X_train.txt", sep="", header=F)
-
-# read activities and subject file
-train.activity <- read.table("UCI HAR Dataset/train/y_train.txt", header=F)
-train.subject <- read.table("UCI HAR Dataset/train/subject_train.txt", header=F)
-
-# add activity and subject to the df.train
-df.train <- cbind(train.activity, df.train)
-df.train <- cbind(train.subject, df.train)
-
-
-## put TRAIN and TEST into one dataframe
-df <- rbind(df.test, df.train)
-
-# removing tmp objects to free up memory
-rm(df.train, df.test, train.activity, train.subject, test.subject, test.activity)
-
-
-
-#########################################################################
-# 2. Extract only the measurements on the mean and standard deviation for 
-#    each measurement.  
-#########################################################################
-
-#read the list of 561 variables 
-features <- read.table("UCI HAR Dataset/features.txt", header=F)
-
-#name the variables in the dataframe includind the first two columns; 
-#later we make the names more descriptive. 
-names(df)[1] <- c("subject")
-names(df)[2] <- c("activity")
-names(df)[3:563] <- as.character(features$V2) 
-
-#extract all variables that measure either "mean" or "std"
-ss <- grep("mean|std", names(df))
-
-#subset df to those columns which contain mean or standard deviation measurements
-#preserve activity and subject columns as well
-df <- df[, c(1,2,ss)]
-
-#take out the FFT variables since these contain the same information as the original 
-#variables just in FFT form. Keep "t*" variables:
-st <- grep("^[t]", names(df))
-df <- df[, c(1,2,st)]
-
-#cleaning up
-rm(ss, st)
-
-
-########################################################################
-# 3. use descriptive activity names to name the activites in the dataset
-########################################################################
-
-# read the levels and lables of the activities
-l.activities <- read.table("UCI HAR Dataset/activity_labels.txt", header=F)
-
-#convert "activity" into descriptive factor. 
-df$activity <- factor(df$activity, levels=l.activities$V1, labels=l.activities$V2)
-
-#cleaning up
-rm(l.activities)
-
-
-###########################
-# 4. Fix the variable names
-###########################
-
-#remove parenthesis "()" and "-" from the names since these will be interpreted
-#as mathematical signs when using the variable names in functions. 
-
-names(df) <- gsub("[()]", "", names(df))
-names(df) <- gsub("[-]", "_", names(df))
-
-
-
-##########################################################################
-# 5. Creates a second, independent tidy data set with the average of each 
-#    variable  for each activity and each subject. 
-##########################################################################
-
-#let's look at the number of cases for each group of subject-activity.
-table(df$subject, df$activity)
-
-#There are 30 subjects performing 6 activities; need to calculate the average for each 
-#variable for each of those 180 groupings. The resulting df will have 180 * 79 = 14220 cells. 
-
-#calculate the mean of each variable, grouped by subject and activity. 
-df.tidy <- aggregate(df[,3:ncol(df)], by=list(df$activity, df$subject), FUN=mean)
-
-#rename grouping variables
-names(df.tidy)[1] <- c("activity")
-names(df.tidy)[2] <- c("subject")
-
-#save tidy data set to file. 
-write.table(df.tidy, file="tidyset.txt", row.name=FALSE)
