@@ -7,66 +7,42 @@
 # 4. Fix the variable names 
 # 5. Create and save a version with an average of each variable for each activity and each subject. 
 
-
-
-
-
 ###############################################
 # 1. Read and merge both train and test dataset
 ###############################################
 
 
 ## read the TEST data 
-df.test <- read.csv("data/test/X_test.txt", sep="", header=F)
-
-# check number of rows and variables
-cat("Test data frame has",nrow(df.test),"observations on", ncol(df.test), "variables\n")
-
-#check NAs
-cat("Complete cases: ", sum(complete.cases(df.test)), "\n")
+df.test <- read.csv("UCI HAR Dataset/test/X_test.txt", sep="", header=F)
 
 # read related activities and subject file(s)
-test.activity <- read.table("data/test/y_test.txt", header=F)
-test.subject <- read.table("data/test/subject_test.txt", header=F)
-
-#nrow(test.activity)
-#nrow(test.subject)
+test.activity <- read.table("UCI HAR Dataset/test/y_test.txt", header=F)
+test.subject <- read.table("UCI HAR Dataset/test/subject_test.txt", header=F)
 
 # combine activity and subject to the df.test
 df.test <- cbind(test.activity, df.test)
 df.test <- cbind(test.subject, df.test)
 
 
-
 ## read the TRAIN data 
-df.train <- read.csv("data/train/X_train.txt", sep="", header=F)
-cat("Train data frame has",nrow(df.train),"observations on", ncol(df.train), "variables\n")
-
-#check NAs
-cat("Complete cases: ", sum(complete.cases(df.train)), "\n")
+df.train <- read.csv("UCI HAR Dataset/train/X_train.txt", sep="", header=F)
 
 # read activities and subject file
-train.activity <- read.table("data/train/y_train.txt", header=F)
-train.subject <- read.table("data/train/subject_train.txt", header=F)
-
-nrow(train.activity)
-nrow(train.subject)
+train.activity <- read.table("UCI HAR Dataset/train/y_train.txt", header=F)
+train.subject <- read.table("UCI HAR Dataset/train/subject_train.txt", header=F)
 
 # add activity and subject to the df.train
 df.train <- cbind(train.activity, df.train)
 df.train <- cbind(train.subject, df.train)
 
 
-
 ## put TRAIN and TEST into one dataframe
 df <- rbind(df.test, df.train)
-
-cat("The combined data frame of test + train has",nrow(df),"observations on", ncol(df), "variables\n")
 
 # removing tmp objects to free up memory
 rm(df.train, df.test, train.activity, train.subject, test.subject, test.activity)
 
-  
+
 
 #########################################################################
 # 2. Extract only the measurements on the mean and standard deviation for 
@@ -74,7 +50,7 @@ rm(df.train, df.test, train.activity, train.subject, test.subject, test.activity
 #########################################################################
 
 #read the list of 561 variables 
-features <- read.table("data/features.txt", header=F)
+features <- read.table("UCI HAR Dataset/features.txt", header=F)
 
 #name the variables in the dataframe includind the first two columns; 
 #later we make the names more descriptive. 
@@ -103,7 +79,7 @@ rm(ss, st)
 ########################################################################
 
 # read the levels and lables of the activities
-l.activities <- read.table("data/activity_labels.txt", header=F)
+l.activities <- read.table("UCI HAR Dataset/activity_labels.txt", header=F)
 
 #convert "activity" into descriptive factor. 
 df$activity <- factor(df$activity, levels=l.activities$V1, labels=l.activities$V2)
