@@ -1,2 +1,85 @@
+Code Book for Final variables:
 
+activity:
+	1 WALKING
+	2 WALKING_UPSTAIRS
+	3 WALKING_DOWNSTAIRS
+	4 SITTING
+	5 STANDING
+	6 LAYING
 
+subject:
+	1-30 Individual Test Subjects
+	
+tBodyAcc_mean_X:
+tBodyAcc_mean_Y:
+tBodyAcc_mean_Z:
+	Mean of Body Acceleration Signals Across All Three Axes
+
+tBodyAcc_std_X:
+tBodyAcc_std_Y:
+tBodyAcc_std_Z:
+	Standard Deviation of Body Accelerometer Signals Across All Three Axes
+	
+tGravityAcc_mean_X:
+tGravityAcc_mean_Y:
+tGravityAcc_mean_Z:
+	Mean of Gravitational Accelerometer Signals Across All Three Axes
+	
+tGravityAcc_std_X:
+tGravityAcc_std_Y:
+tGravityAcc_std_Z:
+	Standard Deviation of Gravitational Accelerometer Signals Across All Three Axes
+	
+tBodyAccJerk_mean_X:
+tBodyAccJerk_mean_Y:
+tBodyAccJerk_mean_Z:
+	Mean of Accelerometer Jerk Signals Across All Three Axes
+	
+tBodyAccJerk_std_X:
+tBodyAccJerk_std_Y:
+tBodyAccJerk_std_Z:
+	Standard Deviation of Accelerometer Jerk Signals Across All Three Axes
+	
+tBodyGyro_mean_X:
+tBodyGyro_mean_Y:
+tBodyGyro_mean_Z:
+	Mean of Body Gyroscopic Signals Across All Three Axes
+
+tBodyGyro_std_X:
+tBodyGyro_std_Y:
+tBodyGyro_std_Z:
+	Standard Deviation of Body Gyroscopic Signals Across All Three Axes
+	
+tBodyGyroJerk_mean_X:
+tBodyGyroJerk_mean_Y:
+tBodyGyroJerk_mean_Z:
+	Mean of Gyroscopic Jerk Signals Across All Three Axes
+	
+tBodyGyroJerk_std_X:
+tBodyGyroJerk_std_Y:
+tBodyGyroJerk_std_Z:
+	Standard Deviation of Gyroscopic Jerk Signals Across All Three Axes
+	
+tBodyAccMag_mean:
+	Mean of Body Accelerometer Magnitude signals aggregate
+tBodyAccMag_std:
+	Standard deviation of Body Accelerometer Magnitude signals aggregate
+tGravityAccMag_mean:
+	Mean of Gravitational Accelerometer Magnitude signals aggregate
+tGravityAccMag_std:
+	Standard deviation of Gravitational Accelerometer Magnitude signals aggregate
+tBodyAccJerkMag_mean:
+	Mean of Body Accelerometer Jerk signals aggregate
+tBodyAccJerkMag_std:
+	Standard deviation of Body Accelerometer Jerk signals aggregate
+tBodyGyroMag_mean:
+	Mean of Body Gyroscopic Magnitude signals aggregate
+tBodyGyroMag_std:
+	Standard Deviation of Body Gyroscopic Magnitude signals aggregate
+tBodyGyroJerkMag_mean:
+	Mean of Body Gyroscopic Jerk signals aggregate
+tBodyGyroJerkMag_std:
+	Standard Deviation of Body Gyroscopic Jerk signals aggregate
+
+f* variables were omitted as the data was the same, just acted on differently IE: Fast Fourier Transform vs. Euclidian
