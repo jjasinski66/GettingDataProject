@@ -1,40 +1,30 @@
 ## Load the required package
 library(reshape2)
 
-# download the data and save it into the data subfolder
-require("R.utils")
-
-if(!file.exists("./data")){dir.create("./data")}
-# download file
-Url <- "https://d396qusza40orc.cloudfront.net/getdata%2Fprojectfiles%2FUCI%20HAR%20Dataset.zip"
-if(!file.exists("./data/UCI.zip")){download.file(Url, destfile = "./data/UCI.zip")}
-# unzip file
-unzip("./data/UCI.zip",exdir = "./data" )
-
 # Reading subjects
 
-subject.test <- read.table("data/UCI HAR Dataset/test/subject_test.txt", header=FALSE, col.names=c("Subject.ID"))
-subject.train <- read.table("data/UCI HAR Dataset/train/subject_train.txt", header=FALSE, col.names=c("Subject.ID"))
+subject.test <- read.table("UCI HAR Dataset/test/subject_test.txt", header=FALSE, col.names=c("Subject.ID"))
+subject.train <- read.table("UCI HAR Dataset/train/subject_train.txt", header=FALSE, col.names=c("Subject.ID"))
 str(subject.test)
 summary(subject.test)
 table(subject.test)
 table(subject.train)
 
 # Reading labels
-y.test <- read.table("data/UCI HAR Dataset/test/y_test.txt", header=FALSE, col.names=c("Activity"))
-y.train <- read.table("data/UCI HAR Dataset/train/y_train.txt", header=FALSE, col.names=c("Activity"))
+y.test <- read.table("UCI HAR Dataset/test/y_test.txt", header=FALSE, col.names=c("Activity"))
+y.train <- read.table("UCI HAR Dataset/train/y_train.txt", header=FALSE, col.names=c("Activity"))
 str(y.test)
 head(y.test)
 
 
 # Reading features
-features <- read.table("data/UCI HAR Dataset/features.txt", header=FALSE, as.is=TRUE, col.names=c("Featire.ID", "Featire.Name"))
+features <- read.table("UCI HAR Dataset/features.txt", header=FALSE, as.is=TRUE, col.names=c("Feature.ID", "Feature.Name"))
 str(features)
 
 
 # Reading data set and label the X. file variable (column) names. This takes time.
-X.test <- read.table("data/UCI HAR Dataset/test/X_test.txt", header=FALSE, sep="", col.names=features$Featire.Name)
-X.train <- read.table("data/UCI HAR Dataset/train/X_train.txt", header=FALSE, sep="", col.names=features$Featire.Name)
+X.test <- read.table("UCI HAR Dataset/test/X_test.txt", header=FALSE, sep="", col.names=features$Feature.Name)
+X.train <- read.table("UCI HAR Dataset/train/X_train.txt", header=FALSE, sep="", col.names=features$Feature.Name)
 str(X.train)
 summary(X.test)
 
@@ -68,7 +58,7 @@ names(X.data)
 head(X.data)
 
 # 3. Uses descriptive activity names to name the activities in the data set
-activity.labels <- read.table("data/UCI HAR Dataset/activity_labels.txt", header=F, col.names=c("Activity", "Activity.Name"))
+activity.labels <- read.table("UCI HAR Dataset/activity_labels.txt", header=F, col.names=c("Activity", "Activity.Name"))
 # There are 6 activity, first three are active, and later three are still.
 # WALKING; WALKING_UPSTAIRS; WALKING_DOWNSTAIRS; SITTING; STANDING; LAYING   
 activity.labels
