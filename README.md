@@ -2,6 +2,8 @@
 Course Project for Data Science Coursera Getting Data
 
 ###############
+# Directions
+
  You should create one R script called run_analysis.R that does the following. 
 
  1) Merges the training and the test sets to create one data set.
@@ -14,6 +16,7 @@ Course Project for Data Science Coursera Getting Data
 
  5)From the data set in step 4, creates a second, independent tidy data set with the average 
     of each variable for each activity and each subject.
+
 ##################################################################
  1. Merges the training and the test sets to create one data set.
 ##################################################################
@@ -47,7 +50,7 @@ Course Project for Data Science Coursera Getting Data
 
 
 ###########################################################################
-# 3. Uses descriptive activity names to name the activities in the data set
+ 3. Uses descriptive activity names to name the activities in the data set
 ###########################################################################
 
 1) read the levels and lables of the activities
