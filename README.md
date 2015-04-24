@@ -20,7 +20,7 @@ Course Project for Data Science Coursera Getting Data
 
 ### 1. Merges the training and the test sets to create one data set.
 
-1) read the TEST data
+1) read in the TEST data
 
 2) combine activity and subject to the Test data
 
@@ -37,13 +37,13 @@ Course Project for Data Science Coursera Getting Data
 
 1) read the list of 561 variables
 
-2) name the variables in the dataframe includind the first two columns
+2) name the variables in the dataframe included the first two columns
 
-3) extract all variables that measure either mean or std
+3) get all variables that measure either mean or std
 
 4) subset frame to those columns which contain mean or standard deviation measurements
 
-5) preserve activity and subject columns as well
+5) preserve activity and subject columns
 
 6) take out the FFT variables , Keep "t" variables
 
@@ -51,13 +51,14 @@ Course Project for Data Science Coursera Getting Data
 
 ### 3. Uses descriptive activity names to name the activities in the data set
 
-1) read the levels and lables of the activities.
+1) read in the activity labels.
 
 2) convert "activity" into descriptive factor. 
 
+
 ### 4. Fix the remaining variable names
 
-1) remove parenthesis "()" and "-" from the names.
+1) remove "()" and "-" from the names.
 
 
 ### 5. Creates a second, independent tidy data set with the average of each variable  for each activity and each subject. 
